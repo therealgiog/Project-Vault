@@ -26,7 +26,7 @@ exports.createPost = async (req, res) => {
 
     res.status(201).send({ newPost })
   } catch (error) {
-    console.log(error)
+    console.log('Error in controller', error)
     res.status(400).send({ error, message: 'Could not create post' })
   }
 }
@@ -34,7 +34,11 @@ exports.createPost = async (req, res) => {
 exports.getPosts = async (req, res) => {
   try {
     const posts = await Post.find({})
-    res.status(201).send({ posts })
+    if (posts.length === 0) {
+      res.status(400).send({ message: 'cannot find posts' })
+    } else {
+      res.status(201).send({ posts })
+    }
   } catch (error) {
     console.log(error)
     res.status(400).send({ error, message: 'cannot find posts' })
@@ -44,7 +48,11 @@ exports.getPosts = async (req, res) => {
 exports.getPostsById = async (req, res) => {
   try {
     const post = await Post.findOne({ id: req.params.id })
-    res.status(201).send({ post })
+    if (!post) {
+      res.status(400).send({ message: 'cannot find post' })
+    } else {
+      res.status(201).send({ post })
+    }
   } catch (error) {
     console.log(error)
     res.status(400).send({ error, message: 'cannot find post' })
@@ -70,7 +78,9 @@ exports.followProject = async (req, res) => {
 
 exports.updateProject = async (req, res) => {
   try {
+    console.log('THIS IS THE ID : ', req.params.id)
     const project = await Post.findOne({ id: req.params.id })
+    console.log('THIS IS A PROJECT', project)
     const newUpdate = {
       id: req.body.id,
       title: req.body.title,
@@ -79,6 +89,9 @@ exports.updateProject = async (req, res) => {
       image: req.body.image,
       video: req.body.video,
       chat: []
+    }
+    if (!project) {
+      return res.status(400).send({ message: 'cannot update' })
     }
 
     project.updates.push(newUpdate)
