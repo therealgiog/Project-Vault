@@ -27,6 +27,8 @@ function Login () {
     e.preventDefault()
     const { email, password } = state
     const user = { email, password }
+    // Could be combined to...
+    // cost user = { ...state }
 
     try {
       const response = await fetch(`${serverURL}/login`, {

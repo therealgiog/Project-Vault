@@ -28,6 +28,8 @@ function Register () {
 
     const { firstName, secondName, email, password } = state
     const user = { firstName, secondName, email, password }
+    // Could be combined to...
+    // const user = { ...state }
 
     fetch(`${serverURL}/register`, {
       method: 'POST',
