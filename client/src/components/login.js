@@ -8,7 +8,7 @@ const initialState = {
   password: ''
 }
 
-const serverURL = process.env.REACT_APP_SERVER
+const serverURL = process.env.REACT_APP_SERVER ?? 'http://localhost:3001'
 
 function Login () {
   const { setUser } = useContext(UserContext)
@@ -54,7 +54,7 @@ function Login () {
       <div className='anotherContainer'>
         <h1>Login</h1>
         <form onSubmit={handleSubmit} className='loginForm'>
-          <label htmlFor='name'>Email:</label>
+          <label htmlFor='name' data-testid='name-label'>Email:</label>
           <input
             type='text'
             id='name'
