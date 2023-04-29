@@ -2,7 +2,13 @@ import {Request, Response } from 'express';
 import User, { isUser } from '../../models/userModel';
 import Post, { isPost } from '../../models/postModel';
 
-export const createPost = async (req: Request, res: Response) => {
+interface Comment {
+  createdBy: string;
+  comment: string;
+  date: string;
+}
+
+export const createPost = async (req: Request, res: Response): Promise<void> => {
   const tagsArr = req.body.tags.split(' ')
   try {
     const newPost: isPost = new Post({
@@ -36,7 +42,7 @@ export const createPost = async (req: Request, res: Response) => {
   }
 }
 
-export const getPosts = async (req: Request, res: Response) => {
+export const getPosts = async (req: Request, res: Response): Promise<void> => {
   try {
     const posts = await Post.find({})
     if (posts.length === 0) {
@@ -50,7 +56,7 @@ export const getPosts = async (req: Request, res: Response) => {
   }
 }
 
-export const getPostsById = async (req: Request, res: Response) => {
+export const getPostsById = async (req: Request, res: Response): Promise<void> => {
   try {
     const post = await Post.findOne({ id: req.params.id })
     if (!post) {
@@ -64,7 +70,7 @@ export const getPostsById = async (req: Request, res: Response) => {
   }
 }
 
-export const followProject = async (req: Request, res: Response) => {
+export const followProject = async (req: Request, res: Response): Promise<void> => {
   const project = req.body.project.id
   try {
     const user = await User.findOne({ _id: req.body.user._id })
@@ -89,11 +95,9 @@ export const followProject = async (req: Request, res: Response) => {
   }
 }
 
-export const updateProject = async (req: Request, res: Response) => {
+export const updateProject = async (req: Request, res: Response): Promise<void> => {
   try {
-    console.log('THIS IS THE ID : ', req.params.id)
     const project = await Post.findOne({ id: req.params.id })
-    console.log('THIS IS A PROJECT', project)
     const newUpdate = {
       id: req.body.id,
       title: req.body.title,
@@ -104,7 +108,8 @@ export const updateProject = async (req: Request, res: Response) => {
       chat: []
     }
     if (!project) {
-      return res.status(400).send({ message: 'cannot update' })
+      res.status(400).send({ message: 'cannot update' })
+      return;
     }
 
     project.updates.push(newUpdate)
@@ -119,7 +124,7 @@ export const updateProject = async (req: Request, res: Response) => {
 }
 
 
-export const followingProjects = async (req: Request, res: Response) => {
+export const followingProjects = async (req: Request, res: Response): Promise<void> => {
   try {
     const user = await User.findById(req.params.id)
     if (!user) {
@@ -135,10 +140,13 @@ export const followingProjects = async (req: Request, res: Response) => {
   }
 }
 
-export const personalProjects = async (req: Request, res: Response) => {
+export const personalProjects = async (req: Request, res: Response): Promise<void> => {
   try {
     const user = await User.findById(req.params.id)
-    if (!user) return res.status(400).send({ message: 'cannot get your projects' })
+    if (!user) {
+      res.status(400).send({ message: 'cannot get your projects' })
+      return;
+      } 
     const created = user.createdPosts
     const projects = await Post.find({ _id: { $in: created } })
 
@@ -149,11 +157,14 @@ export const personalProjects = async (req: Request, res: Response) => {
   }
 }
 
-export const postComment = async (req: Request, res: Response) => {
+export const postComment = async (req: Request, res: Response): Promise<void> => {
   try {
     const project = await Post.findOne({ id: req.body.ProjectId })
-    if (!project) return res.status(400).send({ message: 'cannot post comment' })
-    const newComment = {
+    if (!project){ 
+      res.status(400).send({ message: 'cannot post comment' })
+      return;
+    }
+    const newComment: Comment = {
       createdBy: req.body.createdBy,
       comment: req.body.comment,
       date: req.body.date
