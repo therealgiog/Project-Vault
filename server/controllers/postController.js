@@ -11,7 +11,7 @@ exports.createPost = async (req, res) => {
       image: req.body.image,
       updates: req.body.updates,
       author: req.body.author,
-      createdBy: req.body.user,
+      createdBy: req.body.createdBy,
       date: req.body.date,
       chat: [],
       tags: tagsArr,
@@ -108,10 +108,13 @@ exports.updateProject = async (req, res) => {
 exports.followingProjects = async (req, res) => {
   try {
     const user = await User.findById(req.params.id)
-    const following = user.following
-    const projects = await Post.find({ id: { $in: following } })
-
-    res.status(201).send({ projects })
+    if (!user) {
+      res.status(400).send({ message: 'cannot get following' })
+    } else {
+      const following = user.following
+      const projects = await Post.find({ id: { $in: following } })
+      res.status(201).send({ projects })
+    }
   } catch (error) {
     console.log(error)
     res.status(400).send({ error, message: 'cannot get following' })
@@ -121,6 +124,7 @@ exports.followingProjects = async (req, res) => {
 exports.personalProjects = async (req, res) => {
   try {
     const user = await User.findById(req.params.id)
+    if (!user) return res.status(400).send({ message: 'cannot get your projects' })
     const created = user.createdPosts
     const projects = await Post.find({ _id: { $in: created } })
 
@@ -134,6 +138,7 @@ exports.personalProjects = async (req, res) => {
 exports.postComment = async (req, res) => {
   try {
     const project = await Post.findOne({ id: req.body.ProjectId })
+    if (!project) return res.status(400).send({ message: 'cannot post comment' })
     const newComment = {
       createdBy: req.body.createdBy,
       comment: req.body.comment,
