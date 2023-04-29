@@ -11,15 +11,12 @@ app.use(express.json());
 app.use(router);
 
 const request = supertest(app);
-// jest.mock('../models/postModel.js');
-// jest.mock('../models/userModel.js');
 
 describe('createPost', () => {
   let server: any;
   let db;
 
   beforeAll(async () => {
-    // server = app.listen(3001);
     db = await mongoose.connect(uri)
     await User.deleteOne({email: 'mikesmith@email.com'})
   })
@@ -30,7 +27,6 @@ describe('createPost', () => {
 
   afterAll(async () => {
     await mongoose.connection.close();
-    // await server.close();
   })
 
 
@@ -475,7 +471,7 @@ describe('postComment Projects', () => {
     expect(res.body.message).toBe('cannot post comment');
   })
 
-  it.only('should return a status code of 201 and the project data if successful', async () => {
+  it('should return a status code of 201 and the project data if successful', async () => {
     const userData = {
       firstName: 'Emma',
       secondName: 'Smith',

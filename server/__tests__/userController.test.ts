@@ -1,5 +1,4 @@
 const supertest = require('supertest');
-// const app = require('../../server/index.js')
 const express = require('express');
 import User from '../models/userModel.js';
 import bcrypt from 'bcrypt';
@@ -10,6 +9,7 @@ const app = express();
 app.use(express.json());
 app.use(router);
 const request = supertest(app);
+let hashedPassword;
 
 describe('getUser Controller', () => {
   let server: any;
@@ -17,6 +17,7 @@ describe('getUser Controller', () => {
   beforeAll(async () => {
     db = await mongoose.connect(uri)
     await User.deleteOne({email: 'mikesmith@email.com' });
+    hashedPassword = await bcrypt.hash('test-password', 10);
   })
 
   afterEach( async () => {
@@ -39,24 +40,22 @@ describe('getUser Controller', () => {
       expect(res.body.message).toBe('Username or password is incorrect');
     });
   
-    it('should return 201 and user data when the email and password are correct', async () => {
-      const email = 'user@example.com';
-      const password = 'correctPassword';
-      const newUser = {
-        firstName: 'John',
+    it.only('should return 201 and user data when the email and password are correct', async () => {
+      const userData = {
+        firstName: 'Mike',
         secondName: 'Smith',
-        email: email,
-        password: password,
-        picturePath: '',
-        following: [],
-        createdPosts: [],
+        email: 'mikesmith@email.com',
+        password: 'test-password',
       }
-      const createUser = User.create(newUser)
-      const user = await User.findOne({email: email})
-      const res = await request.post('/login')
-      .send({email: email, password: password})
+      const registerRes = request.post('/register').send(userData);
+      console.log('THIS IS THE REGISTER BODY: ', registerRes.body);
+      const loginData = {
+        email: userData.email,
+        password: userData.password,
+      }
+      const res = await request.post('/login').send({email: userData.email, password: userData.password});
       expect(res.status).toBe(201);
-      expect(res.body).toBe(user);
+      expect(res.body).toBe(res);
     });
 });
 

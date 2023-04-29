@@ -15,11 +15,7 @@ export interface isPost extends Document {
     chat: string[];
   }[];
   author: string;
-  createdBy: {
-    type: typeof import('mongoose').Schema.Types.ObjectId;
-    ref: string;
-    required: true;
-  };
+  createdBy: isUser[];
   date: string;
   chat: {
     createdBy: string;
