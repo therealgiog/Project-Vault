@@ -1,15 +1,14 @@
 const supertest = require('supertest');
-// const app = require('../../server/index.js')
 const express = require('express');
 const Post = require('../models/postModel.js')
 const User = require('../models/userModel.js')
 const mongoose = require('mongoose');
 const router = require('../routes/router.js');
 const uri = 'mongodb+srv://rsmikesahbaz:1234@legacy-project-cluster.8v0cpss.mongodb.net/test';
+
 const app = express();
 app.use(express.json());
 app.use(router);
-
 const request = supertest(app);
 
 describe('createPost', () => {

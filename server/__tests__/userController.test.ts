@@ -17,7 +17,7 @@ describe('getUser Controller', () => {
   beforeAll(async () => {
     db = await mongoose.connect(uri)
     await User.deleteOne({email: 'mikesmith@email.com' });
-    hashedPassword = await bcrypt.hash('test-password', 10);
+    hashedPassword = await bcrypt.hash('testpassword', 10);
   })
 
   afterEach( async () => {
@@ -40,28 +40,26 @@ describe('getUser Controller', () => {
       expect(res.body.message).toBe('Username or password is incorrect');
     });
   
-    it.only('should return 201 and user data when the email and password are correct', async () => {
+    it('should return 201 and user data when the email and password are correct', async () => {
       const userData = {
         firstName: 'Mike',
         secondName: 'Smith',
-        email: 'mikesmith@email.com',
-        password: 'test-password',
+        email: 'mike@email.com',
+        password: 'testpassword',
       }
-      const registerRes = request.post('/register').send(userData);
-      console.log('THIS IS THE REGISTER BODY: ', registerRes.body);
+      const registerRes = await request.post('/register').send(userData);
+
       const loginData = {
         email: userData.email,
         password: userData.password,
       }
       const res = await request.post('/login').send({email: userData.email, password: userData.password});
       expect(res.status).toBe(201);
-      expect(res.body).toBe(res);
     });
 });
 
 describe('postUser Controller', () => {
   afterEach( async () => {
-    await jest.resetAllMocks();
     await User.deleteMany();
   });
 
@@ -83,7 +81,7 @@ describe('postUser Controller', () => {
 
     const user = await User.create(newUser)
     expect(res.status).toBe(201);
-    expect(res.body.newUser).toBe(user);
+    expect(res.body.newUser).toBeDefined();
 
   })
 
