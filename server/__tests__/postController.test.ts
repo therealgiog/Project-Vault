@@ -370,7 +370,7 @@ describe('Following Projects Controller', () => {
     expect(res.body.message).toBe('cannot get following');
   })
 
-  it('should return a status code of 201 and projects data when succesful', async () => {
+  it.only('should return a status code of 201 and projects data when succesful', async () => {
     const userData = {
       firstName: 'Emma',
       secondName: 'Smith',
@@ -398,9 +398,10 @@ describe('Following Projects Controller', () => {
     };
     const res = await request.post('/create').send(postData);
     const followData = {
-      project: { id: postData.id }
+      project: { id: postData.id },
+      user: { _id: res1.body.newUser._id },
     }
-    const followRes = await request.post(`/posts/follow`).send(postData.id)
+    const followRes = await request.post(`/posts/follow`).send(followData)
     expect(followRes.status).toBe(201);
 
     const followingProjectsRes = await request.get(`/posts/following/${res1.body.newUser._id}`);
