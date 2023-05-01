@@ -68,33 +68,38 @@ describe('postUser Controller', () => {
   })
 
   it('should return 201 and new user data when the email is not in use already', async () => {
-    const email = 'user@example2.com';
-    const password = '1234';
     const newUser = {
-      firstName: 'John',
-      secondName: 'Doe',
-      email: email,
-      password: password,
+      firstName: 'Mike',
+      secondName: 'Smith',
+      email: 'mike123@email.com',
+      password: 'testpassword',
     }
-    const res = await request.post('/register', )
-    .send({email, password})
+    const res = await request.post('/register').send(newUser)
+    console.log(res.body);
 
-    const user = await User.create(newUser)
+    
     expect(res.status).toBe(201);
     expect(res.body.newUser).toBeDefined();
 
   })
 
   it('should return 401 if the email is already in use', async () => {
-    const originalEmail = 'user@example.com';
-    const originalPassword = '4321';
-    const user = await User.create({email: originalEmail, password: originalPassword})
+    const newUser = {
+      firstName: 'Mike',
+      secondName: 'Smith',
+      email: 'mike1234@email.com',
+      password: 'testpassword',
+    }
+    const originalRes = await request.post('/register').send(newUser)
 
-    const email = 'user@example.com';
-    const password = '1234';
+   const sameUser = {
+    firstName: 'Mike',
+    secondName: 'Smith',
+    email: 'mike1234@email.com',
+    password: 'testpassword',
+   }
 
-    const res = await request.post('/register', )
-    .send({email, password});
+    const res = await request.post('/register').send(sameUser);
 
     expect(res.status).toBe(401);
     expect(res.body.message).toBe('email already in use' );
