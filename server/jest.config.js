@@ -1,5 +1,5 @@
 module.exports = {
   preset: 'ts-jest',
   testEnvironment: 'node',
-  testMatch: ['**/__tests__/**/userController.test.ts']
+  testMatch: ['**/__tests__/**/postController.test.ts']
 }

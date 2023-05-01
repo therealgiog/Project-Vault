@@ -239,6 +239,7 @@ describe('followProject Controller', () => {
       password: '1234',
     }
     const res1 = await request.post('/register').send(userData);
+    
     const postData = {
       id: '123',
       title: 'Test title',
@@ -256,6 +257,7 @@ describe('followProject Controller', () => {
       date: '2023-01-01',
       tags: 'tag1 tag2',
     };
+    const postRes = await request.post('/create').send(postData);
     const followProjectData = {
       user: { _id: res1.body.newUser._id },
       project: { id: postData.id }
