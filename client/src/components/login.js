@@ -53,8 +53,8 @@ function Login () {
     <div className='loginContainer'>
       <div className='anotherContainer'>
         <h1>Login</h1>
-        <form onSubmit={handleSubmit} className='loginForm'>
-          <label htmlFor='name' data-testid='name-label'>Email:</label>
+        <form onSubmit={handleSubmit} className='loginForm' data-testid='login-form'>
+          <label htmlFor='name'>Email:</label>
           <input
             type='text'
             id='name'
@@ -68,6 +68,7 @@ function Login () {
             id='password'
             value={state.password}
             name='password'
+            data-testid='password-input'
             onChange={handleChange}></input>
 
           <button

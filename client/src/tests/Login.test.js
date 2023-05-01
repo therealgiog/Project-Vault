@@ -1,35 +1,60 @@
 import React from 'react'
-import { render, screen, test } from '@testing-library/react'
 import Login from '../components/login'
 import UserContext from '../context/UserContext'
-import {Router, Routes, Route, Navigate} from 'react-router-dom';
-import { BrowserHistory, createBrowserHistory } from 'history';
-import '@testing-library/jest-dom';
+import {Router, Routes, Route} from 'react-router-dom'
+import { createBrowserHistory } from 'history'
+import ReactDOM from 'react-dom'
+import { render, screen, fireEvent, waitFor} from '@testing-library/react'
+import '@testing-library/jest-dom'
 
 
 describe('Login Tests', () => {
   let user
   let setUser
-  let history
+  let browserHistory
   beforeEach(() => {
-    user = {}
-    setUser = jest.fn()
-    history = createBrowserHistory();
-    render(
-      <UserContext.Provider value={{ user, setUser }}>
-        <Router location={history.location} navigator={history}>
-        <Routes>
-          {/* <Route path="/" element={<Navigate to="/login" />} /> */}
-          <Route path='/' element={<Login />}>
-          </Route>
-        </Routes>
-      </Router>
-      </UserContext.Provider>
+     user = {}
+     setUser = jest.fn()
+     browserHistory = createBrowserHistory()
+  })
+
+  it('Should render without crashing', () => {
+    const div = document.createElement("div")
+    ReactDOM.render(
+      <UserContext.Provider value={{ setUser }}>
+        <Router location={browserHistory.location} navigator={browserHistory}>
+          <Login/>
+        </Router>
+      </UserContext.Provider>,
+      div
     )
   })
 
-  it('should do...', () => {
-    expect(screen.getByTestId('name-label').textContent).toBe('Email:')
-    //expect(setUser).toHaveBeenCalled()
+  it('Renders Login page correctly', () => {
+    render(
+      <UserContext.Provider value={{ user, setUser }}>
+        <Router location={browserHistory.location} navigator={browserHistory}>
+          <Login/>
+        </Router>
+      </UserContext.Provider>
+    )
+    const formDiv = screen.getByTestId('login-form')
+    const emailLabel = screen.getByLabelText('Email:')
+    const emailInput = screen.getByRole('textbox', {name: 'Email:'})
+    const passwordLabel = screen.getByLabelText('Password:')
+    const passwordInput = screen.getByTestId('password-input')
+    const submitButton = screen.getByRole('button')
+    expect(formDiv).toBeInTheDocument()
+    expect(emailLabel).toBeInTheDocument()
+    expect(emailInput).toBeInTheDocument()
+    expect(passwordLabel).toBeInTheDocument()
+    expect(passwordInput).toBeInTheDocument()
+    expect(passwordInput).toHaveAttribute('type', 'password')
+    expect(submitButton).toBeInTheDocument()
+    expect(submitButton).toHaveAttribute('type', 'submit')
   })
+
+  //should submit the form correct and navigate to /home
+  //should display an error for invalid login
+
 })
