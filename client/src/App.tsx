@@ -3,7 +3,7 @@ import { Route, Routes, Navigate } from 'react-router-dom'
 import Register from './components/register'
 import Login from './components/login'
 import Home from './components/home'
-import UserContext from './context/UserContext'
+import UserContext, { User } from './context/UserContext'
 import './App.css'
 import Layout from './components/layout'
 import Project from './components/projectInfo'
@@ -11,21 +11,9 @@ import Following from './components/followingProjects'
 import PersonalProjects from './components/personalProjects'
 import Form2 from './components/form2'
 
-interface User {
-  firstName: string
-  secondName: string
-  email: string
-  password: string
-}
-
-interface UserContextValue {
-  user: User | null
-  setUser: React.Dispatch<React.SetStateAction<User | null>>
-}
-
 function App () {
   const [user, setUser] = useState<User | null>(null)
-  const userContextValue: UserContextValue = { user, setUser }
+  const userContextValue = { user, setUser }
   return (
     <UserContext.Provider value={userContextValue}>
       <Routes>
