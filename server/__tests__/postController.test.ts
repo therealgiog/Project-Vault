@@ -370,7 +370,7 @@ describe('Following Projects Controller', () => {
     expect(res.body.message).toBe('cannot get following');
   })
 
-  it.only('should return a status code of 201 and projects data when succesful', async () => {
+  it('should return a status code of 201 and projects data when succesful', async () => {
     const userData = {
       firstName: 'Emma',
       secondName: 'Smith',
