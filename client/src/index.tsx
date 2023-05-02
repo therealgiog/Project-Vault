@@ -5,12 +5,7 @@ import App from './App'
 import reportWebVitals from './reportWebVitals'
 import { BrowserRouter } from 'react-router-dom'
 
-// if (process.env.NODE_ENV === 'development') {
-//   const { server } = require('./mocks/browser')
-//   server.start()
-// }
-
-const root = ReactDOM.createRoot(document.getElementById('root'))
+const root = ReactDOM.createRoot(document.getElementById('root')!)
 root.render(
   <React.StrictMode>
     <BrowserRouter>
