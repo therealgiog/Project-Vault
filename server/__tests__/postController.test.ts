@@ -5,7 +5,8 @@ const User = require('../models/userModel.js')
 const mongoose = require('mongoose');
 const router = require('../routes/router.js');
 const uri = 'mongodb+srv://rsmikesahbaz:1234@legacy-project-cluster.8v0cpss.mongodb.net/test';
-
+let db;
+let server: any;
 const app = express();
 app.use(express.json());
 app.use(router);
@@ -19,13 +20,10 @@ afterEach( async () => {
   await Post.deleteMany();
 })
 
-describe('createPost', () => {
-  let server: any;
-  let db;
-
   beforeAll(async () => {
-    db = await mongoose.connect(uri)
+    db = await mongoose.connect(uri);
     await User.deleteOne({email: 'mikesmith@email.com'})
+    await Post.deleteMany({});
   })
 
   afterEach( async () => {
@@ -35,6 +33,8 @@ describe('createPost', () => {
   afterAll(async () => {
     await mongoose.connection.close();
   })
+
+describe('createPost', () => {
 
 
   it('should give a 400 status if it cannot create a post', async () => {
@@ -62,9 +62,6 @@ describe('createPost', () => {
       password: '1234',
     }
     const res1 = await request.post('/register').send(userData);
-    console.log('THIS IS RES FOR USER', res1.body);
-    // const myTestUser = await User.create(userData);
-    // console.log('THIS IS MY TEST USER:', myTestUser);
 
     const postData = {
       id: 'testId',
@@ -94,23 +91,6 @@ describe('createPost', () => {
 
 
 describe('getPosts Controller', () => {
-  let server: any;
-  let db;
-
-  beforeAll(async () => {
-    // server = app.listen(3001);
-    db = await mongoose.connect(uri)
-    await User.deleteOne({email: 'mikesmith@email.com'})
-    await Post.deleteMany({});
-  })
-
-  afterEach( async () => {
-    // await Post.deleteMany({});
-  });
-
-  afterAll(async () => {
-    await mongoose.connection.close();
-  })
 
   it('should return a status of 400 if the post does not exist', async () => {
     const res = await request.get('/posts').send();
@@ -155,21 +135,6 @@ describe('getPosts Controller', () => {
 
 
 describe('getPostsById Controller', () => {
-  let server: any;
-  let db;
-
-  beforeAll(async () => {
-    db = await mongoose.connect(uri)
-    await User.deleteOne({email: 'mikesmith@email.com'})
-    await Post.deleteMany({});
-  })
-
-  afterEach( async () => {
-  });
-
-  afterAll(async () => {
-    await mongoose.connection.close();
-  });
 
   it('should return a status code of 400 if it cannot find the post by ID', async () => {
     const postIdData = { id: 123}
@@ -212,21 +177,6 @@ describe('getPostsById Controller', () => {
 })
 
 describe('followProject Controller', () => {
-  let server: any;
-  let db;
-
-  beforeAll(async () => {
-    db = await mongoose.connect(uri)
-    await User.deleteOne({email: 'mikesmith@email.com'})
-    await Post.deleteMany({});
-  })
-
-  afterEach( async () => {
-  });
-
-  afterAll(async () => {
-    await mongoose.connection.close();
-  });
 
   it('should return a status code of 400', async () => {
     const followProjectData = {
@@ -277,22 +227,6 @@ describe('followProject Controller', () => {
 })
 
 describe('updateProject Controller', () => {
-  let server: any;
-  let db;
-
-  beforeAll(async () => {
-    db = await mongoose.connect(uri)
-    await User.deleteOne({email: 'mikesmith@email.com'})
-    await Post.deleteMany({});
-  })
-
-  afterEach( async () => {
-  });
-
-  afterAll(async () => {
-    await mongoose.connection.close();
-  });
-
 
   it('should return a status code of 400 if it cannot update the project', async () => {
     const newUpdate = {
@@ -354,21 +288,6 @@ describe('updateProject Controller', () => {
 })
 
 describe('Following Projects Controller', () => {
-  let server: any;
-  let db;
-
-  beforeAll(async () => {
-    db = await mongoose.connect(uri)
-    await User.deleteOne({email: 'mikesmith@email.com'})
-    await Post.deleteMany({});
-  })
-
-  afterEach( async () => {
-  });
-
-  afterAll(async () => {
-    await mongoose.connection.close();
-  });
 
   it('should return a status of 400 when it cant get user following', async () => {
 
@@ -419,21 +338,6 @@ describe('Following Projects Controller', () => {
 })
 
 describe('personalProjects Controller', () => {
-  let server: any;
-  let db;
-
-  beforeAll(async () => {
-    db = await mongoose.connect(uri)
-    await User.deleteOne({email: 'mikesmith@email.com'})
-    await Post.deleteMany({});
-  })
-
-  afterEach( async () => {
-  });
-
-  afterAll(async () => {
-    await mongoose.connection.close();
-  });
 
   it('should return a status code of 400 when it cant get your projects', async () => {
     const badUserId = 9876;
@@ -458,21 +362,6 @@ describe('personalProjects Controller', () => {
 })
 
 describe('postComment Projects', () => {
-  let server: any;
-  let db;
-
-  beforeAll(async () => {
-    db = await mongoose.connect(uri)
-    await User.deleteOne({email: 'mikesmith@email.com'})
-    await Post.deleteMany({});
-  })
-
-  afterEach( async () => {
-  });
-
-  afterAll(async () => {
-    await mongoose.connection.close();
-  });
 
   it('should return a status code of 400 if it cant post a comment', async () => {
     const projectId = '7654';
