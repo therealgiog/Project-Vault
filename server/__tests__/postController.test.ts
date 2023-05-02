@@ -11,6 +11,14 @@ app.use(express.json());
 app.use(router);
 const request = supertest(app);
 
+beforeEach(async () => {
+  await User.deleteOne({email: 'mikesmith@email.com'})
+})
+
+afterEach( async () => {
+  await Post.deleteMany();
+})
+
 describe('createPost', () => {
   let server: any;
   let db;

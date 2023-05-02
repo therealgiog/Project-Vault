@@ -1,5 +1,6 @@
 const supertest = require('supertest');
 const express = require('express');
+import { before } from 'node:test';
 import User from '../models/userModel.js';
 import bcrypt from 'bcrypt';
 const mongoose = require('mongoose');
@@ -10,6 +11,23 @@ app.use(express.json());
 app.use(router);
 const request = supertest(app);
 let hashedPassword;
+let db;
+
+beforeEach( async () => {
+  await User.deleteOne({email: 'mikesmith@email.com' });
+})
+
+beforeAll( async () => {
+  db = await mongoose.connect(uri);
+})
+
+afterEach( async () => {
+  await User.deleteMany();
+});
+
+afterAll(async () => {
+  await mongoose.connection.close();
+})
 
 describe('getUser Controller', () => {
   let server: any;
