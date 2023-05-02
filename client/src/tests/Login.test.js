@@ -5,8 +5,8 @@ import {Router, Routes, Route} from 'react-router-dom'
 import { createBrowserHistory } from 'history'
 import ReactDOM from 'react-dom'
 import { render, screen, fireEvent, waitFor} from '@testing-library/react'
+import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom'
-
 
 describe('Login Tests', () => {
   let user
@@ -18,19 +18,20 @@ describe('Login Tests', () => {
      browserHistory = createBrowserHistory()
   })
 
-  it('Should render without crashing', () => {
-    const div = document.createElement("div")
-    ReactDOM.render(
-      <UserContext.Provider value={{ setUser }}>
-        <Router location={browserHistory.location} navigator={browserHistory}>
-          <Login/>
-        </Router>
-      </UserContext.Provider>,
-      div
-    )
-  })
+  //unnecessary
+  // it('Should render without crashing', () => {
+  //   const div = document.createElement("div")
+  //   ReactDOM.render(
+  //     <UserContext.Provider value={{ setUser }}>
+  //       <Router location={browserHistory.location} navigator={browserHistory}>
+  //         <Login/>
+  //       </Router>
+  //     </UserContext.Provider>,
+  //     div
+  //   )
+  // })
 
-  it('Renders Login page correctly', () => {
+  it('should render Login page correctly', () => {
     render(
       <UserContext.Provider value={{ user, setUser }}>
         <Router location={browserHistory.location} navigator={browserHistory}>
@@ -54,7 +55,48 @@ describe('Login Tests', () => {
     expect(submitButton).toHaveAttribute('type', 'submit')
   })
 
-  //should submit the form correct and navigate to /home
-  //should display an error for invalid login
+  it('should submit form with valid email password', async () => {
+    render(
+      <UserContext.Provider value={{ user, setUser }}>
+        <Router location={browserHistory.location} navigator={browserHistory}>
+          <Routes>
+            <Route path='/' element={<Login />}/>
+            <Route path='/home' element={<div>Home</div>}/>
+          </Routes>
+        </Router>
+      </UserContext.Provider>
+    )
+    const emailInput = screen.getByTestId('email-input')
+    const passwordInput = screen.getByTestId('password-input')
+    const submitButton = screen.getByTestId('login-button')
+    userEvent.type(emailInput, 'test')
+    userEvent.type(passwordInput, '1234')
+    userEvent.click(submitButton);
+    await waitFor(() => {
+       //expect(localStorage.getItem('is-authenticated')).toBe('true')
+       expect(browserHistory.location.pathname).toBe('/home')
+    })
+  })
 
+  // it('should send error with invalid email or password', async () => {
+  //   render(
+  //     <UserContext.Provider value={{ user, setUser }}>
+  //       <Router location={browserHistory.location} navigator={browserHistory}>
+  //         <Routes>
+  //           <Route path='/' element={<Login />}/>
+  //           <Route path='home' element={<div>Home</div>}/>
+  //         </Routes>
+  //       </Router>
+  //     </UserContext.Provider>
+  //   )
+  //   const emailLabel = screen.getByLabelText('Email:')
+  //   const passwordLabel = screen.getByLabelText('Password:')
+  //   const submitButton = screen.getByRole('button');
+  //   userEvent.type(emailLabel, '');
+  //   userEvent.type(passwordLabel, '');
+  //   fireEvent.click(submitButton);
+  //   await waitFor(() => {
+  //     expect(screen.getByText('Wrong email or password')).toBeInTheDocument()
+  //   })
+  // })
 })

@@ -2,7 +2,14 @@ import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import '../styles/register.css'
 
-const initialState = {
+interface FormState {
+  firstName: string;
+  secondName: string;
+  email: string;
+  password: string;
+}
+
+const initialState: FormState = {
   firstName: '',
   secondName: '',
   email: '',
@@ -12,10 +19,10 @@ const initialState = {
 const serverURL = process.env.REACT_APP_SERVER
 
 function Register () {
-  const [state, setState] = useState(initialState)
+  const [state, setState] = useState<FormState>(initialState)
   const navigate = useNavigate()
 
-  function handleChange (e) {
+  function handleChange (e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target
     setState((prev) => ({
       ...prev,
@@ -23,7 +30,7 @@ function Register () {
     }))
   }
 
-  function handleSubmit (e) {
+  function handleSubmit (e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
 
     const { firstName, secondName, email, password } = state
@@ -54,7 +61,7 @@ function Register () {
     <div className='loginContainer'>
       <div className='anotherContainerRegister'>
         <h1>Register</h1>
-        <form onSubmit={handleSubmit} className='registerForm'>
+        <form onSubmit={handleSubmit} className='registerForm' data-testid='register-form'>
 
           <label htmlFor='firstName'>First Name:</label>
           <input
@@ -90,6 +97,7 @@ function Register () {
             name="password"
             required
             value={state.password}
+            data-testid='password-input'
             onChange={handleChange}
           ></input>
 

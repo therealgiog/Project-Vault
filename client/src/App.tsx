@@ -11,10 +11,23 @@ import Following from './components/followingProjects'
 import PersonalProjects from './components/personalProjects'
 import Form2 from './components/form2'
 
+interface User {
+  firstName: string
+  secondName: string
+  email: string
+  password: string
+}
+
+interface UserContextValue {
+  user: User | null
+  setUser: React.Dispatch<React.SetStateAction<User | null>>
+}
+
 function App () {
-  const [user, setUser] = useState(null)
+  const [user, setUser] = useState<User | null>(null)
+  const userContextValue: UserContextValue = { user, setUser }
   return (
-    <UserContext.Provider value={{ user, setUser }}>
+    <UserContext.Provider value={userContextValue}>
       <Routes>
       <Route path="/" element={<Navigate to="/login" />} />
         <Route path='/register' element={<Register/>}/>

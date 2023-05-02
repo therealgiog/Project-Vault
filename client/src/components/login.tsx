@@ -3,7 +3,12 @@ import { useNavigate, Link } from 'react-router-dom'
 import UserContext from '../context/UserContext'
 import '../styles/login.css'
 
-const initialState = {
+interface FormState {
+  email: string;
+  password: string;
+}
+
+const initialState: FormState = {
   email: '',
   password: ''
 }
@@ -12,10 +17,10 @@ const serverURL = process.env.REACT_APP_SERVER ?? 'http://localhost:3001'
 
 function Login () {
   const { setUser } = useContext(UserContext)
-  const [state, setState] = useState(initialState)
+  const [state, setState] = useState<FormState>(initialState)
   const navigate = useNavigate()
 
-  function handleChange (e) {
+  function handleChange (e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target
     setState((prev) => ({
       ...prev,
@@ -23,7 +28,7 @@ function Login () {
     }))
   }
 
-  async function handleSubmit (e) {
+  async function handleSubmit (e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const { email, password } = state
     const user = { email, password }
@@ -38,10 +43,12 @@ function Login () {
       })
 
       if (response.status === 401) {
-        alert('Wrong email or password')
+        //alert('Wrong email or password')
+        navigate('/register')
         return
       }
       const currentUser = await response.json()
+      localStorage.setItem('is-authenticated', 'true')
       setUser(currentUser)
       navigate('/home')
     } catch (err) {
@@ -60,6 +67,7 @@ function Login () {
             id='name'
             value={state.email}
             name='email'
+            data-testid='email-input'
             onChange={handleChange}></input>
 
           <label htmlFor='password'>Password:</label>
@@ -72,7 +80,7 @@ function Login () {
             onChange={handleChange}></input>
 
           <button
-            type='submit' className='loginButton'>Log In</button>
+            type='submit' className='loginButton' data-testid="login-button">Log In</button>
         </form>
         <span>Dont have an account?</span>
         <Link to={'/register'}> Sign Up</Link>
