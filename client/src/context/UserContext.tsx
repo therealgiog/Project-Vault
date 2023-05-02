@@ -1,23 +1,9 @@
 import React from 'react'
+import { UserContextInterface } from '../interfaces/userInterface'
 
-export type User = {
-  firstName: string;
-  secondName: string;
-  email: string;
-  password: string;
-  picturePath?: string;
-  following?: string[];
-  createdPosts?: string[];
-}
-
-export type UserContextType = {
-  user: User | null;
-  setUser: (user: User | null) => void;
-}
-
-const UserContext = React.createContext<UserContextType>({
+const UserContext = React.createContext<UserContextInterface>({
   user: null,
-  setUser: () => {},
+  setUser: () => {}
 })
 
 export default UserContext

@@ -1,15 +1,9 @@
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { Form } from '../interfaces/formInterface'
 import '../styles/register.css'
 
-interface FormState {
-  firstName: string;
-  secondName: string;
-  email: string;
-  password: string;
-}
-
-const initialState: FormState = {
+const initialState: Form = {
   firstName: '',
   secondName: '',
   email: '',
@@ -19,7 +13,7 @@ const initialState: FormState = {
 const serverURL = process.env.REACT_APP_SERVER
 
 function Register () {
-  const [state, setState] = useState<FormState>(initialState)
+  const [state, setState] = useState<Form>(initialState)
   const navigate = useNavigate()
 
   function handleChange (e: React.ChangeEvent<HTMLInputElement>) {

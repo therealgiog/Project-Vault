@@ -1,55 +1,16 @@
 import React, { useState, useEffect, useContext } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import '../styles/projectInformation.css'
-import UserContext,  { UserContextType } from '../context/UserContext'
+import UserContext from '../context/UserContext'
 import Update from './updateProject'
 import ProjectNav from './projectNav'
-
-type Update = {
-  id: string;
-  title: string;
-  description: string;
-  date: string;
-  image?: string;
-  video?: string;
-  chat?: string[];
-}
-
-type Comment = {
-  createdBy: string;
-  comment: string;
-  date: string;
-}
-
-type Project = {
-  id: string;
-  title: string;
-  description: string;
-  image: string;
-  updates?: Update[];
-  author: string;
-  createdBy: string;
-  date: string;
-  chat?: Comment[];
-  tags?: string[];
-  followers?: string[];
-}
 
 const serverURL = process.env.REACT_APP_SERVER
 
 function Project () {
-  const { id } = useParams<{ id: string }>()
-  const [project, setProject] = useState<Project>({
-    id: '',
-    title: '',
-    author: '',
-    date: '',
-    description: '',
-    image: '',
-    createdBy: '',
-    updates: [],
-  })
-  const { user, setUser } = useContext<UserContextType>(UserContext)
+  const { id } = useParams()
+  const [project, setProject] = useState({})
+  const { user, setUser } = useContext(UserContext)
   const [isOpen, setIsOpen] = useState(false)
   const navigate = useNavigate()
 
