@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "types": ["jest", "node"],
+    "target": "es6",
+    "module": "commonjs",
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "resolveJsonModule": true,
+    "outDir": "./dist",
+    "allowJs": true,
+    "checkJs": false,
+    "moduleResolution": "node"
+  },
+  "include": ["server/**/*.ts", "server/node-mocks-http.d.ts", "server/src/**/*.ts"],
+  "exclude": ["node_modules", "dist"]
+}
