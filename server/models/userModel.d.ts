@@ -1,5 +1,4 @@
 import { Document, Model } from 'mongoose';
-import { type } from 'os';
 
 export interface isUser extends Document {
   firstName: string;

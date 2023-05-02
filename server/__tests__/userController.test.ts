@@ -12,6 +12,7 @@ app.use(router);
 const request = supertest(app);
 let hashedPassword;
 let db;
+let server: any;
 
 beforeEach( async () => {
   await User.deleteOne({email: 'mikesmith@email.com' });
@@ -30,21 +31,6 @@ afterAll(async () => {
 })
 
 describe('getUser Controller', () => {
-  let server: any;
-  let db;
-  beforeAll(async () => {
-    db = await mongoose.connect(uri)
-    await User.deleteOne({email: 'mikesmith@email.com' });
-    hashedPassword = await bcrypt.hash('testpassword', 10);
-  })
-
-  afterEach( async () => {
-    await User.deleteMany();
-  });
-
-  afterAll(async () => {
-    await mongoose.connection.close();
-  })
   
     it('should return 401 when the email or password are wrong', async () => {
       const email = 'user@exampletest.com';
@@ -77,13 +63,6 @@ describe('getUser Controller', () => {
 });
 
 describe('postUser Controller', () => {
-  afterEach( async () => {
-    await User.deleteMany();
-  });
-
-  afterAll(async () => {
-    await mongoose.connection.close();
-  })
 
   it('should return 201 and new user data when the email is not in use already', async () => {
     const newUser = {
