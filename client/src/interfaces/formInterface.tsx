@@ -4,3 +4,10 @@ export interface Form {
   email: string;
   password: string;
 }
+
+export const initialFormState = {
+  firstName: undefined,
+  secondName: undefined,
+  email: '',
+  password: ''
+}

@@ -1,19 +1,14 @@
 import React, { useContext, useState } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import UserContext from '../context/UserContext'
-import { Form } from '../interfaces/formInterface'
+import { Form, initialFormState } from '../interfaces/formInterface'
 import '../styles/login.css'
-
-const initialState: Form = {
-  email: '',
-  password: ''
-}
 
 const serverURL = process.env.REACT_APP_SERVER ?? 'http://localhost:3001'
 
 function Login () {
   const { setUser } = useContext(UserContext)
-  const [state, setState] = useState<Form>(initialState)
+  const [state, setState] = useState<Form>(initialFormState)
   const navigate = useNavigate()
 
   function handleChange (e: React.ChangeEvent<HTMLInputElement>) {

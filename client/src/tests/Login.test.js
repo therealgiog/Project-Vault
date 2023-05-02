@@ -73,7 +73,7 @@ describe('Login Tests', () => {
     userEvent.type(passwordInput, '1234')
     userEvent.click(submitButton);
     await waitFor(() => {
-       //expect(localStorage.getItem('is-authenticated')).toBe('true')
+       expect(localStorage.getItem('is-authenticated')).toBe('true')
        expect(browserHistory.location.pathname).toBe('/home')
     })
   })

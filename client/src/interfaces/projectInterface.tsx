@@ -1,6 +1,6 @@
 import { User } from './userInterface'
 
-export interface Post {
+export interface Project {
   _id: string;
   id: string;
   title: string;
@@ -16,7 +16,7 @@ export interface Post {
     chat: string[];
   }[];
   author: string;
-  createdBy: User[];
+  createdBy: string;
   date: string;
   chat: {
     createdBy: string;
@@ -25,4 +25,31 @@ export interface Post {
   }[];
   tags: string[];
   followers: string[];
+}
+
+export const initialProjectState = {
+  _id: '',
+  id: '',
+  title: '',
+  description: '',
+  image: '',
+  updates: [{
+    id: '',
+    title: '',
+    description: '',
+    date: '',
+    image: undefined,
+    video: undefined,
+    chat: []
+  }],
+  author: '',
+  createdBy: '',
+  date: '',
+  chat: [{
+    createdBy: '',
+    comment: '',
+    date: '',
+  }],
+  tags: [],
+  followers: []
 }

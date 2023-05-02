@@ -2,14 +2,15 @@ import React, { useState, useEffect, useContext } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import '../styles/projectInformation.css'
 import UserContext from '../context/UserContext'
-import Update from './updateProject'
+import UpdateProject from './updateProject'
 import ProjectNav from './projectNav'
+import { Project, initialProjectState } from '../interfaces/projectInterface'
 
 const serverURL = process.env.REACT_APP_SERVER
 
 function Project () {
   const { id } = useParams()
-  const [project, setProject] = useState({})
+  const [project, setProject] = useState<Project>(initialProjectState)
   const { user, setUser } = useContext(UserContext)
   const [isOpen, setIsOpen] = useState(false)
   const navigate = useNavigate()
@@ -30,7 +31,7 @@ function Project () {
   }
 
   async function handleFollowClick () {
-    if (user.following.includes(project.id)) return
+    if (user?.following.includes(project.id)) return
 
     const response = await fetch(`${serverURL}/posts/follow`, {
       method: 'POST',
@@ -47,7 +48,7 @@ function Project () {
   return (
     <>
   <div>
-    <Update open={isOpen} onClose={() => setIsOpen(false)} currentProject = {project} getProject={getProject}></Update>
+    <UpdateProject open={isOpen} onClose={() => setIsOpen(false)} currentProject = {project} getProject={getProject}/>
     <div className='containerFullInfo'>
       <div className="imgDiv"
         style={{ backgroundImage: `url(https://res.cloudinary.com/dn1tvs94e/image/upload/v1681997706/${project.image}.jpg)` }}>
@@ -70,13 +71,13 @@ function Project () {
           <ProjectNav update={project.updates} project={project} handleCommentSubmit={handleCommentSubmit}/>
         </div>
       <div className='buttonContainer'>
-          { user._id === project.createdBy
+          { user?._id === project.createdBy
             ? (
                 <button onClick={() => setIsOpen(true)} className='updateButton'>UPDATE</button>
               )
             : <>
                 <button className='followAndDonateButtons'
-                onClick={handleFollowClick}>{user.following.includes(project.id) ? 'Following' : 'Follow'}</button>
+                onClick={handleFollowClick}>{user?.following.includes(project.id) ? 'Following' : 'Follow'}</button>
                 <button className='followAndDonateButtons' onClick={() => navigate('/donation')}>Donate</button>
               </>
             }
