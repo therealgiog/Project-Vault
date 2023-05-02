@@ -8,6 +8,18 @@ interface Comment {
   date: string;
 }
 
+interface Update {
+  id: string;
+  title: string;
+  description: string;
+  date: string;
+  image?: string;
+  video?: string;
+  chat: string[];
+}
+
+
+
 export const createPost = async (req: Request, res: Response): Promise<void> => {
   const tagsArr = req.body.tags.split(' ')
   try {
@@ -98,7 +110,7 @@ export const followProject = async (req: Request, res: Response): Promise<void> 
 export const updateProject = async (req: Request, res: Response): Promise<void> => {
   try {
     const project = await Post.findOne({ id: req.params.id })
-    const newUpdate = {
+    const newUpdate: Update = {
       id: req.body.id,
       title: req.body.title,
       description: req.body.quillValue,
