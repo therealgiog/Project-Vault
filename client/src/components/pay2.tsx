@@ -11,8 +11,8 @@ let initialAmount: number
 function Pay2 () {
   const [amount, setAmount] = useState(initialAmount)
   const [isProcessing, setIsProcessing] = useState(false)
-  const stripe = useStripe()
-  const elements = useElements()
+  const stripe:any = useStripe()
+  const elements:any = useElements()
   const navigate = useNavigate()
 
   function handleChange (e: React.ChangeEvent<HTMLInputElement>) {

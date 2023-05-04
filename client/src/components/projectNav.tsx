@@ -6,13 +6,30 @@ import '../styles/updateProjects.css'
 import { BiUser } from 'react-icons/bi'
 import { Project } from '../interfaces/projectInterface'
 
+type ProjectUpdate = {
+  _id: string;
+  id: string;
+  title: string;
+  description: string;
+  date: string;
+  image?: string | undefined;
+  video?: string | undefined;
+  chat: string[];
+}[]
+
+type ProjectChat = {
+    createdBy: string;
+    comment: string;
+    date: string;
+}[]
+
 const serverURL = process.env.REACT_APP_SERVER
 
-function ProjectNav ({ update, project, handleCommentSubmit }: { update: any, project: Project, handleCommentSubmit: any }) {
+function ProjectNav ({ update, project, handleCommentSubmit }: { update: ProjectUpdate, project: Project, handleCommentSubmit: any }) {
   const [selectedOption, setSelectedOption] = useState('updates')
   const [comment, setComment] = useState('')
   const { user } = useContext(UserContext)
-  const sortedArr = project.chat ? [...project.chat].reverse() : []
+  const sortedArr: ProjectChat = project.chat ? [...project.chat].reverse() : []
 
   function handleChange (e: React.ChangeEvent<HTMLTextAreaElement>) {
     setComment(e.target.value)
@@ -96,7 +113,7 @@ function ProjectNav ({ update, project, handleCommentSubmit }: { update: any, pr
           <div className='commentsSection'>
             {sortedArr.map((msg) => (
               <>
-              <div className='wholeComment' key={msg}>
+              <div className='wholeComment' key={msg.date}>
                 <div className='userComment'>
                   <span><BiUser/></span>
                   <span>{msg.createdBy}</span>

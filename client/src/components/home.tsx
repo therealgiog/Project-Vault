@@ -2,26 +2,12 @@ import React, { useEffect, useState } from 'react'
 import '../styles/home.css'
 import HomeProject from './homeProject'
 import SearchBar from './searchBar'
+import { Project, PostsData } from '../interfaces/projectInterface'
 
 const serverURL = process.env.REACT_APP_SERVER
 
-interface Project {
-  id: string;
-  title: string;
-  author: string;
-  date: string;
-  description: string;
-  image: string;
-  tags: string[];
-  [key: string]: any;
-}
-
-interface PostsData {
-  posts: Project[];
-}
-
 const Home: React.FC = () => {
-  const [projects, setProjects] = useState<PostsData | ''>('')
+  const [projects, setProjects] = useState<PostsData>({ posts: [] })
   const [searchResults, setSearchResult] = useState<Project[]>([])
 
   const getProjects = async () => {

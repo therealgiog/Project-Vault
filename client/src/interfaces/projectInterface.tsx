@@ -7,6 +7,7 @@ export interface Project {
   description: string;
   image: string;
   updates: {
+    _id: string;
     id: string;
     title: string;
     description: string;
@@ -27,6 +28,10 @@ export interface Project {
   followers: string[];
 }
 
+export interface PostsData {
+  posts: Project[];
+}
+
 export const initialProjectState = {
   _id: '',
   id: '',
@@ -34,6 +39,7 @@ export const initialProjectState = {
   description: '',
   image: '',
   updates: [{
+    _id: '',
     id: '',
     title: '',
     description: '',
