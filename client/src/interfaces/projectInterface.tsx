@@ -1,4 +1,4 @@
-import { User } from './userInterface'
+// import { User } from './userInterface'
 
 export interface Project {
   _id: string;
@@ -48,7 +48,7 @@ export const initialProjectState = {
   chat: [{
     createdBy: '',
     comment: '',
-    date: '',
+    date: ''
   }],
   tags: [],
   followers: []

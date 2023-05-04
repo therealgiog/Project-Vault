@@ -5,7 +5,7 @@ import Pay2 from './pay2'
 
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY as string)
 
-const Form2: React.FC =  () => {
+const Form2: React.FC = () => {
   return (
     <Elements stripe={stripePromise}>
       <Pay2/>

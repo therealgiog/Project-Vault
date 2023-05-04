@@ -1,5 +1,5 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+// import PropTypes from 'prop-types'
 import '../styles/homeproject.css'
 import { useNavigate } from 'react-router-dom'
 import { BiUser } from 'react-icons/bi'
@@ -19,7 +19,7 @@ interface HomeProjectProps {
   project: Project;
 }
 
-const HomeProject: React.FC<HomeProjectProps> =  ({ project }) => {
+const HomeProject: React.FC<HomeProjectProps> = ({ project }) => {
   const navigate = useNavigate()
   const truncatedText = project.description.length > 400 ? project.description.substring(0, 400) + ' ...' : project.description
 
@@ -50,6 +50,5 @@ const HomeProject: React.FC<HomeProjectProps> =  ({ project }) => {
     </div>
   )
 }
-
 
 export default HomeProject

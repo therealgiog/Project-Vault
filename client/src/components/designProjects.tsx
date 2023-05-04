@@ -1,5 +1,5 @@
 import React from 'react'
-import PropTypes from 'prop-types'
+// import PropTypes from 'prop-types'
 import '../styles/projectDesign.css'
 import { BiUser } from 'react-icons/bi'
 import { Link } from 'react-router-dom'
@@ -17,7 +17,7 @@ interface ProjectDesignProps {
   project: Project;
 }
 
-const ProjectDesign: React.FC<ProjectDesignProps> =  ({ project }) => {
+const ProjectDesign: React.FC<ProjectDesignProps> = ({ project }) => {
   const truncatedText = project.description.length > 100 ? project.description.substring(0, 100) + ' ...' : project.description
 
   return (
@@ -43,6 +43,5 @@ const ProjectDesign: React.FC<ProjectDesignProps> =  ({ project }) => {
     </Link>
   )
 }
-
 
 export default ProjectDesign

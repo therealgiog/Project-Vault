@@ -2,18 +2,25 @@ import React, { useContext, useState, useEffect } from 'react'
 import UserContext from '../context/UserContext'
 import ProjectDesign from './designProjects'
 import '../styles/projectDesign.css'
+import { Project } from '../interfaces/projectInterface'
 
 const serverURL = process.env.REACT_APP_SERVER
 
-function Following () {
+interface FollowingProjectsData {
+  projects: Project[];
+}
+
+const Following: React.FC = () => {
   const { user } = useContext(UserContext)
-  const [followingProjects, setFollowingProjects] = useState('')
+  const [followingProjects, setFollowingProjects] = useState<FollowingProjectsData | '' >('')
 
   const getProjects = async () => {
     try {
-      const response = await fetch(`${serverURL}/posts/following/${user._id}`)
-      const data = await response.json()
-      setFollowingProjects(data)
+      if (user) {
+        const response = await fetch(`${serverURL}/posts/following/${user._id}`)
+        const data = await response.json()
+        setFollowingProjects(data)
+      }
     } catch (error) {
       console.log(error)
     }

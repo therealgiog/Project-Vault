@@ -20,7 +20,7 @@ interface PostsData {
   posts: Project[];
 }
 
-const Home: React.FC =  () => {
+const Home: React.FC = () => {
   const [projects, setProjects] = useState<PostsData | ''>('')
   const [searchResults, setSearchResult] = useState<Project[]>([])
 
@@ -44,7 +44,7 @@ const Home: React.FC =  () => {
 
   return (
     <>
-    <div><SearchBar projects={(projects && typeof projects !== 'string' ) ? projects.posts : []} setSearchResult={setSearchResult}/></div>
+    <div><SearchBar projects={(projects && typeof projects !== 'string') ? projects.posts : []} setSearchResult={setSearchResult}/></div>
       <div>
         {searchResults && searchResults.map((project) => (
             <HomeProject key={project._id} project={project} />

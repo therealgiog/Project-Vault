@@ -31,19 +31,21 @@ function Update ({ open, onClose, currentProject, getProject }: { open: boolean,
   }
 
   function handleFileInputChange (event: React.ChangeEvent<HTMLInputElement>) {
-    const { files } = event.target;
-    const selectedFiles = files as FileList;
-    setCurrentFile(selectedFiles?.[0]);
+    const { files } = event.target
+    const selectedFiles = files as FileList
+    setCurrentFile(selectedFiles?.[0])
   }
 
   async function handleSubmit (e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     let image = ''
     const formData = new FormData()
-    if (currentFile)
+    if (currentFile) {
       formData.append('file', currentFile)
-    if (process.env.REACT_APP_CLOUDINARY_UPLOAD)
+    }
+    if (process.env.REACT_APP_CLOUDINARY_UPLOAD) {
       formData.append('upload_preset', process.env.REACT_APP_CLOUDINARY_UPLOAD)
+    }
 
     try {
       const response = await Axios.post(`https://api.cloudinary.com/v1_1/${process.env.REACT_APP_KEY}/image/upload`, formData)
