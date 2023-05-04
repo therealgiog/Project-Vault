@@ -4,7 +4,22 @@ import '../styles/homeproject.css'
 import { useNavigate } from 'react-router-dom'
 import { BiUser } from 'react-icons/bi'
 
-function HomeProject ({ project }) {
+interface Project {
+  id: string;
+  title: string;
+  author: string;
+  date: string;
+  description: string;
+  image: string;
+  tags: string[];
+  [key: string]: any;
+}
+
+interface HomeProjectProps {
+  project: Project;
+}
+
+const HomeProject: React.FC<HomeProjectProps> =  ({ project }) => {
   const navigate = useNavigate()
   const truncatedText = project.description.length > 400 ? project.description.substring(0, 400) + ' ...' : project.description
 
@@ -36,8 +51,5 @@ function HomeProject ({ project }) {
   )
 }
 
-HomeProject.propTypes = {
-  project: PropTypes.object
-}
 
 export default HomeProject

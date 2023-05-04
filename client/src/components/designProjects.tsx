@@ -4,7 +4,20 @@ import '../styles/projectDesign.css'
 import { BiUser } from 'react-icons/bi'
 import { Link } from 'react-router-dom'
 
-function ProjectDesign ({ project }) {
+interface Project {
+  id: string;
+  description: string;
+  image: string;
+  title: string;
+  author: string;
+  date: string;
+}
+
+interface ProjectDesignProps {
+  project: Project;
+}
+
+const ProjectDesign: React.FC<ProjectDesignProps> =  ({ project }) => {
   const truncatedText = project.description.length > 100 ? project.description.substring(0, 100) + ' ...' : project.description
 
   return (
@@ -31,8 +44,5 @@ function ProjectDesign ({ project }) {
   )
 }
 
-ProjectDesign.propTypes = {
-  project: PropTypes.object
-}
 
 export default ProjectDesign

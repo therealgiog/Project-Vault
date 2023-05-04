@@ -5,9 +5,24 @@ import SearchBar from './searchBar'
 
 const serverURL = process.env.REACT_APP_SERVER
 
-function Home () {
-  const [projects, setProjects] = useState('')
-  const [searchResults, setSearchResult] = useState([])
+interface Project {
+  id: string;
+  title: string;
+  author: string;
+  date: string;
+  description: string;
+  image: string;
+  tags: string[];
+  [key: string]: any;
+}
+
+interface PostsData {
+  posts: Project[];
+}
+
+const Home: React.FC =  () => {
+  const [projects, setProjects] = useState<PostsData | ''>('')
+  const [searchResults, setSearchResult] = useState<Project[]>([])
 
   const getProjects = async () => {
     try {
@@ -29,7 +44,7 @@ function Home () {
 
   return (
     <>
-    <div><SearchBar projects={projects.posts} setSearchResult={setSearchResult}/></div>
+    <div><SearchBar projects={(projects && typeof projects !== 'string' ) ? projects.posts : []} setSearchResult={setSearchResult}/></div>
       <div>
         {searchResults && searchResults.map((project) => (
             <HomeProject key={project._id} project={project} />
