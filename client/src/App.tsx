@@ -7,7 +7,7 @@ import UserContext from './context/UserContext'
 import { User } from './interfaces/userInterface'
 import './App.css'
 import Layout from './components/layout'
-import Project from './components/project'
+import ProjectInfo from './components/projectInfo'
 import Following from './components/followingProjects'
 import PersonalProjects from './components/personalProjects'
 import Form2 from './components/form2'
@@ -23,7 +23,7 @@ function App () {
         <Route path='/login' element={<Login/>}/>
         <Route element={<Layout/>}>
           <Route path='/home' element={<Home/>} />
-          <Route path='/posts/:id' element={<Project/>} />
+          <Route path='/posts/:id' element={<ProjectInfo/>} />
           <Route path='/posts/following' element={<Following/>} />
           <Route path='/posts/personal' element={<PersonalProjects/>} />
         </Route>

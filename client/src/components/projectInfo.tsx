@@ -8,7 +8,7 @@ import { Project, initialProjectState } from '../interfaces/projectInterface'
 
 const serverURL = process.env.REACT_APP_SERVER
 
-function Project () {
+function ProjectInfo () {
   const { id } = useParams()
   const [project, setProject] = useState<Project>(initialProjectState)
   const { user, setUser } = useContext(UserContext)
@@ -88,4 +88,4 @@ function Project () {
   )
 }
 
-export default Project
+export default ProjectInfo
