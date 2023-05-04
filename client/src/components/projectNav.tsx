@@ -4,26 +4,27 @@ import PropTypes from 'prop-types'
 import UserContext from '../context/UserContext'
 import '../styles/updateProjects.css'
 import { BiUser } from 'react-icons/bi'
+import { Project } from '../interfaces/projectInterface'
 
 const serverURL = process.env.REACT_APP_SERVER
 
-function ProjectNav ({ update, project, handleCommentSubmit }) {
+function ProjectNav ({ update, project, handleCommentSubmit }: { update: any, project: Project, handleCommentSubmit: any }) {
   const [selectedOption, setSelectedOption] = useState('updates')
   const [comment, setComment] = useState('')
   const { user } = useContext(UserContext)
   const sortedArr = project.chat ? [...project.chat].reverse() : []
 
-  function handleChange (e) {
+  function handleChange (e: React.ChangeEvent<HTMLTextAreaElement>) {
     setComment(e.target.value)
   }
 
-  function handleSubmit (e) {
+  function handleSubmit (e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
 
     const today = new Date()
     const date = today.toLocaleDateString()
     const ProjectId = project.id
-    const createdBy = user.firstName + ' ' + user.secondName
+    const createdBy = user?.firstName + ' ' + user?.secondName
     const postComment = { createdBy, comment, date, ProjectId }
 
     setComment('')
@@ -86,7 +87,7 @@ function ProjectNav ({ update, project, handleCommentSubmit }) {
               placeholder="Add a comment"
               name="name"
               value={comment}
-              onChange={handleChange}
+              onChange={ () => handleChange }
             />
             <button type='submit' className='postButton'>
               Send

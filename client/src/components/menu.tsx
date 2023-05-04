@@ -44,7 +44,7 @@ function Menu () {
 
           <div className='userContainer'>
             <BiUser className='userIcon'/>
-            <span className='userInformation'>Welcome back <br/> <span className='userName'>{user.firstName} {user.secondName}</span></span>
+            <span className='userInformation'>Welcome back <br/> <span className='userName'>{user?.firstName} {user?.secondName}</span></span>
           </div>
           <div className='createButtonContainer'>
               <button className='createButton' onClick={() => setIsOpen(true)}>Create</button>

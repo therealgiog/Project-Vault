@@ -16,32 +16,36 @@ const initialState = {
 
 const serverURL = process.env.REACT_APP_SERVER
 
-function CreatePost ({ open, onClose }) {
+function CreatePost ({ open, onClose }: { open: boolean, onClose: () => void }) {
   if (!open) return null
   const navigate = useNavigate()
-  const [selectedFile, setSelectedFile] = useState(initialState)
+  const [currentFile, setCurrentFile] = useState<File>()
   const { user } = useContext(UserContext)
   const [postInfo, setPostInfo] = useState(initialState)
   const [quillValue, setQuillValue] = useState('')
 
-  function handleChange (e) {
+  function handleChange (e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target
     setPostInfo((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }))
   }
 
-  function handleFileInputChange (e) {
-    setSelectedFile(e.target.files[0])
+  function handleFileInputChange (event: React.ChangeEvent<HTMLInputElement>) {
+    const { files } = event.target;
+    const selectedFiles = files as FileList;
+    setCurrentFile(selectedFiles?.[0]);
   }
 
-  async function handleSubmit (e) {
+  async function handleSubmit (e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     let image = ''
     const formData = new FormData()
-    formData.append('file', selectedFile)
-    formData.append('upload_preset', process.env.REACT_APP_CLOUDINARY_UPLOAD)// 'jhbdwgkt')
+    if (currentFile)
+      formData.append('file', currentFile)
+    if (process.env.REACT_APP_CLOUDINARY_UPLOAD)
+      formData.append('upload_preset', process.env.REACT_APP_CLOUDINARY_UPLOAD)// 'jhbdwgkt')
 
     try {
       const response = await Axios.post(`https://api.cloudinary.com/v1_1/${process.env.REACT_APP_KEY}/image/upload`, formData)
@@ -53,7 +57,7 @@ function CreatePost ({ open, onClose }) {
     const today = new Date()
     const date = today.toLocaleDateString()
     const id = uuidv4()
-    const author = `${user.firstName} ${user.secondName}`
+    const author = `${user?.firstName} ${user?.secondName}`
     const { title, tags } = postInfo
     const post = { id, title, quillValue, image, user, author, tags, date }
 
@@ -69,8 +73,8 @@ function CreatePost ({ open, onClose }) {
           alert('error')
         }
       })
-      .then(navigate(`/posts/${id}`))
-      .then(onClose())
+      .then(() => navigate(`/posts/${id}`))
+      .then(() => onClose())
       .catch((err) => console.log(err))
   }
 

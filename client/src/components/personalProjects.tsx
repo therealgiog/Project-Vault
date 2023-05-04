@@ -10,7 +10,7 @@ function PersonalProjects () {
 
   const getProjects = async () => {
     try {
-      const response = await fetch(`${serverURL}/posts/personal/${user._id}`)
+      const response = await fetch(`${serverURL}/posts/personal/${user?._id}`)
       const data = await response.json()
       setPersonalProjects(data)
     } catch (error) {

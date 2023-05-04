@@ -2,13 +2,14 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import { BiSearch } from 'react-icons/bi'
 import '../styles/searchBar.css'
+import { Project } from '../interfaces/projectInterface'
 
-function SearchBar ({ projects, setSearchResult }) {
-  function handleSubmit (e) {
+function SearchBar ({ projects, setSearchResult }: { projects: Project[], setSearchResult: Function }) {
+  function handleSubmit (e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
   }
 
-  function handleSearchChange (e) {
+  function handleSearchChange (e: React.ChangeEvent<HTMLInputElement>) {
     if (!e.target.value) return setSearchResult(projects)
 
     const resultsArray = projects.filter(project =>
@@ -26,7 +27,7 @@ function SearchBar ({ projects, setSearchResult }) {
           id='search'
           placeholder='Search...'
           onChange={handleSearchChange}></input>
-          <span className='searchButton' type='submit'><BiSearch/></span>
+          <span className='searchButton'><BiSearch/></span>
       </form>
     </header>
   )

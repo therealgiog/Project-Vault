@@ -14,14 +14,15 @@ const initialState = {
 
 const serverURL = process.env.REACT_APP_SERVER
 
-function Update ({ open, onClose, currentProject, getProject }) {
+// currentProject is of 'any' type, must be changed
+function Update ({ open, onClose, currentProject, getProject }: { open: boolean, onClose: () => void, currentProject: any, getProject: () => void }) {
   if (!open) return null
 
-  const [selectedFile, setSelectedFile] = useState(initialState)
+  const [currentFile, setCurrentFile] = useState<File>()
   const [state, setState] = useState(initialState)
   const [quillValue, setQuillValue] = useState('')
 
-  function handleChange (e) {
+  function handleChange (e: React.ChangeEvent<HTMLInputElement>) {
     const { name, value } = e.target
     setState((prev) => ({
       ...prev,
@@ -29,16 +30,20 @@ function Update ({ open, onClose, currentProject, getProject }) {
     }))
   }
 
-  function handleFileInputChange (e) {
-    setSelectedFile(e.target.files[0])
+  function handleFileInputChange (event: React.ChangeEvent<HTMLInputElement>) {
+    const { files } = event.target;
+    const selectedFiles = files as FileList;
+    setCurrentFile(selectedFiles?.[0]);
   }
 
-  async function handleSubmit (e) {
+  async function handleSubmit (e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     let image = ''
     const formData = new FormData()
-    formData.append('file', selectedFile)
-    formData.append('upload_preset', process.env.REACT_APP_CLOUDINARY_UPLOAD)
+    if (currentFile)
+      formData.append('file', currentFile)
+    if (process.env.REACT_APP_CLOUDINARY_UPLOAD)
+      formData.append('upload_preset', process.env.REACT_APP_CLOUDINARY_UPLOAD)
 
     try {
       const response = await Axios.post(`https://api.cloudinary.com/v1_1/${process.env.REACT_APP_KEY}/image/upload`, formData)
@@ -66,7 +71,7 @@ function Update ({ open, onClose, currentProject, getProject }) {
         }
       })
       .then(() => getProject())
-      .then(onClose())
+      .then(() => onClose())
       .catch((err) => console.log(err))
   }
 

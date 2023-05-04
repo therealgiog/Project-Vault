@@ -6,18 +6,20 @@ import '../styles/donationForm.css'
 
 const serverURL = process.env.REACT_APP_SERVER
 
+let initialAmount: number
+
 function Pay2 () {
-  const [amount, setAmount] = useState('')
+  const [amount, setAmount] = useState(initialAmount)
   const [isProcessing, setIsProcessing] = useState(false)
   const stripe = useStripe()
   const elements = useElements()
   const navigate = useNavigate()
 
-  function handleChange (e) {
-    setAmount(e.target.value)
+  function handleChange (e: React.ChangeEvent<HTMLInputElement>) {
+    setAmount(Number(e.target.value))
   }
 
-  async function handleSubmit (e) {
+  async function handleSubmit (e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     const { error, paymentMethod } = await stripe.createPaymentMethod({
       type: 'card',
